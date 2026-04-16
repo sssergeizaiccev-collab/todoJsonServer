@@ -1,0 +1,17 @@
+{
+  "todos": [
+    {
+      "id": "1",
+      "title": "Купить продукты"
+    },
+    {
+      "id": "2",
+      "title": "Сходить в зал"
+    },
+    {
+      "id": "3",
+      "title": "Прочитать 20 страниц книги"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
