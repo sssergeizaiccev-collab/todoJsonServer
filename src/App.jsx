@@ -10,17 +10,15 @@ function App() {
   const [editingId, setEditingId] = useState(null);
   const [search, setSearch] = useState("");
   const [isSorted, setIsSorted] = useState(false);
-  const { todos, isLoaded, error, addTodoo, deleteTodo, updateTodo } =
-    useTodos();
+
   const debouncedSearch = useDebounce(search, 500);
 
-  const filteredTodos = todos.filter((todo) =>
-    todo.title.toLowerCase().includes(debouncedSearch.toLowerCase()),
-  );
+  const { todos, isLoaded, error, addTodoo, deleteTodo, updateTodo } =
+    useTodos(debouncedSearch);
 
   const displayedTodos = isSorted
-    ? [...filteredTodos].sort((a, b) => a.title.localeCompare(b.title))
-    : filteredTodos;
+    ? [...todos].sort((a, b) => a.title.localeCompare(b.title))
+    : todos;
 
   return (
     <div className={styles.app}>

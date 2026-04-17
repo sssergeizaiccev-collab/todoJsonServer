@@ -1,17 +1,35 @@
 import { useState, useEffect } from "react";
 
-export const useTodos = () => {
+export const useTodos = (search) => {
   const [todos, setTodos] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3005/todos")
-      .then((res) => res.json())
-      .then((loadedTodos) => {
-        setTodos(loadedTodos);
-      });
-  }, []);
+    const fetchTodos = async () => {
+      try {
+          setIsLoaded(true);
+          setError(null);
+
+          const url = search 
+          ? `http://localhost:3005/todos?q=${search}`
+          : 'http://localhost:3005/todos'
+
+          const res = await fetch(url);
+
+          if (!res.ok) {
+            throw new Error('Ошибка загрухки');
+          }
+          const data = await res.json();
+          setTodos(data);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setIsLoaded(false);
+        }
+      }
+      fetchTodos();
+  }, [search]);
 
   const addTodoo = async (title) => {
     if (!title.trim()) return;
@@ -61,6 +79,8 @@ export const useTodos = () => {
   };
 
   const updateTodo = async (id, title) => {
+    if (!title.trim()) return;
+    
     try {
       setIsLoaded(true);
       setError(null);
